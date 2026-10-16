@@ -1,9 +1,16 @@
 import './App.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function App() {
 
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState<number>(() => {
+        const stored = localStorage.getItem('counterValue')
+        return stored !== null ? JSON.parse(stored) : 0
+    })
+
+    useEffect(() => {
+        localStorage.setItem('counterValue', JSON.stringify(value))
+    }, [value])
 
     const incHandler = () => {
         setValue(value + 1)
